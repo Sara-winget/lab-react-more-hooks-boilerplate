@@ -57,7 +57,8 @@ const handelFocus=()=>{
          <input type="text" value={toDo.inputVal} onChange={handleInput} onKeyDown={handleTask}/>
        <ul>
         {todo.task.map((item)=>(
-            <li key={item.id}>{toDo.inputVal}
+            <li key={item.id}>
+            <input value={item.text}/>
                 <button onClick={()=>handleToggle(item.id)}>toggle</button>
             </li>
             
