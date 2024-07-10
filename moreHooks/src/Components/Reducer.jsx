@@ -1,73 +1,74 @@
-import React from "react";
-import { useReducer } from "react";
-import { useRef } from "react";
-function Reducer(){
-const todo={
-    inputVal:"",
-    task:[],
-}
+import React, { useReducer, useState, useRef, useEffect } from 'react';
+import './Reducer.css'
+const initialState = {
+  inputVal: '',
+  list: [],
+  hidden: [],
+};
 
+const toDo = (state, action) => {
+  switch (action.type) {
+    case 'set':
+      return {
+        ...state,
+        list: [...state.list, action.payload],
+        hidden: [...state.hidden, false],
+        inputVal: '',
+      };
+    case 'input':
+      return { ...state, inputVal: action.payload };
+    case 'toggle':
+      const newHidden = [...state.hidden];
+      newHidden[action.payload] = !newHidden[action.payload];
+      return { ...state, hidden: newHidden };
+    default:
+      return state;
+  }
+};
 
-const showUp=useRef(null);
+function ReducerDemo() {
+  const enter = useRef(null);
+  const [state, dispatch] = useReducer(toDo, initialState);
+  const [scrollUp, setUp] = useState(0);
 
-   const toReduce=(state,action)=>{
-    switch(action.type){
-        case"input":
-        return {...state,inputVal:action.value}
-        case"tasks":
-        console.log(9);
-        return {
-            ...state,task:[...state.task,
-                {id:Date.now(),text:state.inputVal,hidden:false},
-            ],
-            inputVal:"",
-        };
-        case "toogle":
-            return{
-                ...state,
-                tasks:state.tasks.map((task)=>
-                    task.id===action.id?{...task,hidden:!task.hidden}:task
-                ),
-            };
-            default:
-                return state;
-    }
-   } 
+  useEffect(() => {
+    enter.current.focus();
+  }, [scrollUp]);
 
-const [toDo,dispatch]=useReducer(toReduce,todo)
-const handleInput=(e)=>{
-    dispatch({type:"input",value:e.target.value})
-    console.log(1);
-}
-const handleTask=(e)=>{
-    if(e.key=='Enter')
-        dispatch({type:"tasks"})
-    console.log(2);
-}
-const handleToggle=(id)=>{
-    dispatch:({type:"toggle",id})
-    console.log(3);
-}
-const handelFocus=()=>{
-    if(showUp.current)
-        showUp.current.focus();
-}
-    return(
-        <div>
-         <input type="text" value={toDo.inputVal} onChange={handleInput} onKeyDown={handleTask}/>
-       <ul>
-        {todo.task.map((item)=>(
-            <li key={item.id}>
-            <input value={item.text}/>
-                <button onClick={()=>handleToggle(item.id)}>toggle</button>
+  return (
+    <>
+    <div className='ToDo'>
+      <div className='enter'>
+        <input
+          type="text"
+          style={{height:50,width:400}}
+          ref={enter}
+          value={state.inputVal}
+          onChange={(e) => dispatch({ type: 'input', payload: e.target.value })}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              dispatch({ type: 'set', payload: e.target.value });
+            }
+          }}
+        />
+      </div>
+      <div className='items'>
+      <ul>
+        {state.list.map((item, index) => (
+          <div key={index}>
+            <li>
+              {state.hidden[index] ? <h3>The content is hidden</h3> : <h2>{item}</h2>}
+              <br />
+              <button  onClick={() => dispatch({ type: 'toggle', payload: index })}>
+                Toggle
+              </button>
             </li>
-            
-            ))}
-       </ul>
-       <button onClick={handelFocus}
-       >showUP</button>
-        </div>
-
-    )
+          </div>
+        ))}
+      </ul></div>
+      <div ><button className='upBtn' onClick={() => { setUp(scrollUp + 1) }}>scroll up</button>
+      </div></div> </>
+  );
 }
-export default Reducer
+
+export default ReducerDemo;

@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import './App.css'
-import Reducer from './Components/Reducer'
+
+import ReducerDemo from './Components/Reducer'
 
 function App() {
   
 
   return (
     <>
-      <Reducer/>
+      <ReducerDemo/>
     </>
   )
 }

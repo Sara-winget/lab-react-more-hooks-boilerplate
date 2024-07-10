@@ -1,0 +1,43 @@
+*{
+    margin:0;
+    padding:0;
+    
+    box-sizing: border-box;
+}
+
+.ToDo{
+    margin-left: 500px;
+    display: flex;
+    height: 10000px;
+    width: 2000px;
+    border:solid black;
+    flex-direction: column;
+    align-items: center;
+    justify-content:flex-start ;
+}
+.enter{
+    margin:50px;
+    
+}
+
+li{
+    background-color: pink;
+    margin-bottom: 70px;
+    width: 1980px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 25px;
+}
+ul{
+    list-style-type: none;
+    
+}
+
+.upBtn{
+    margin-top: 30px;
+    border-radius: 40px;
+    border-color: black;
+    font-size: 40px;
+
+}
